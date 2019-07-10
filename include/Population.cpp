@@ -17,19 +17,17 @@ void Population::markHappy() {
 }
 
 void Population::findClosestCells(Cell currentCell) {
-    // Create 10 cells to store minimum distance
-    std::array<std::shared_ptr<CellContainer>, 10> closest;
-    for (auto newCell : closest) {
-        newCell = std::make_shared<CellContainer>();
-    }
-
     for (Cell cell : cells) {
-
+        if (currentCell != cell) {
+            float dist = calculateDistance(currentCell.circle.getPosition(), cell.circle.getPosition());
+            currentCell.checkIfClosest(cell.race, dist);
+        }
     }
 }
 
-int Population::calculateDistance(sf::Vector2f cellOne, sf::Vector2f cellTwo) {
-
+float Population::calculateDistance(sf::Vector2f cellOne, sf::Vector2f cellTwo) {
+    sf::Vector2f diff = cellOne - cellTwo;
+    return diff.x * diff.x + diff.y * diff.y; // Note: don't need to sqrt
 }
 
 void Population::moveUnhappyToRandom() {

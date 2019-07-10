@@ -14,7 +14,19 @@ Cell::Cell(int _race, sf::Vector2u windowSize) : race(_race), happy(false) {
 }
 
 bool operator== (Cell &lhs, Cell &rhs) {
-    return (lhs.circle.getPosition() == rhs.circle.getPosition() &&
-            lhs.circle.getFillColor() == rhs.circle.getFillColor() &&
-            lhs.race == rhs.race);
+    return (lhs == rhs); // Only true if both are pointers to same thing (don't care about the value)
+}
+
+bool operator!= (Cell&lhs, Cell &rhs) {
+    return (lhs != rhs);
+}
+
+void Cell::resetClosest() {
+    for (auto cont : closest) {
+        cont.isClosest = false;
+    }
+}
+
+void Cell::checkIfClosest(int race, float dist) {
+
 }

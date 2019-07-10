@@ -15,10 +15,10 @@ class Population {
 
     public:
         Population(int, int, sf::Vector2u);
-        
+
         void markHappy();
         void findClosestCells(Cell);
-        int calculateDistance(sf::Vector2f, sf::Vector2f);
+        float calculateDistance(sf::Vector2f, sf::Vector2f);
         void moveUnhappyToRandom();
         std::vector<Cell> getCells();
 };
