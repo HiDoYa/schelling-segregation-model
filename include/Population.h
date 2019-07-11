@@ -3,6 +3,9 @@
 #include <array>
 #include <memory>
 #include <iostream>
+#include <thread>
+#include <cmath>
+#include <algorithm>
 
 #include "GlobalSettings.h"
 #include "Cell.h"
@@ -18,6 +21,7 @@ struct CellContainer {
     int distance;
 };
 
+/*  For unparallelized version
 struct Max {
     Max() : itr(0), dist(0) {}
     void findNewMax(std::array<CellContainer, GlobalSettings::NumNeighbors> cellCont) {
@@ -32,6 +36,7 @@ struct Max {
     int itr;
     float dist;
 };
+*/
 
 class Population {
     private:
@@ -43,10 +48,9 @@ class Population {
         std::vector<Cell> getCells();
 
     private:
-        void markHappy();
+        void parallelClosest(int, int, Cell);
         std::array<CellContainer, GlobalSettings::NumNeighbors> findClosestCells(Cell);
         float calculateDistance(sf::Vector2f, sf::Vector2f);
-        void moveUnhappyToRandom(sf::Vector2u);
 };
 
 #endif

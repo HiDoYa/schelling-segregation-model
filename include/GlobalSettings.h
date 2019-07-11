@@ -3,8 +3,8 @@
 
 namespace GlobalSettings {
     const int NumRaces = 2;
-    const int NumCellsPerRace = 250;
-    const int NumNeighbors = 10;
+    const int NumCellsPerRace = 10;
+    const int NumNeighbors = 1;
 
     // How many foreign neighbors that cells are happy with
     // Between 0 and 1

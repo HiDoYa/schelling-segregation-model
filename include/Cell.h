@@ -19,7 +19,6 @@ class Cell {
     private:
         sf::CircleShape circle;
         int race;
-        bool happy;
         Closest closest[GlobalSettings::NumNeighbors];
 
     public:

@@ -1,6 +1,6 @@
 #include "Cell.h"
 
-Cell::Cell(int _race, sf::Vector2u windowSize) : race(_race), happy(false) {
+Cell::Cell(int _race, sf::Vector2u windowSize) : race(_race) {
     // Get random start position
     newRandomPosition(windowSize);
     circle.setRadius(3);
