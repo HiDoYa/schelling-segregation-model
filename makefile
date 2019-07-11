@@ -1,5 +1,5 @@
 OBJ = main.o population.o cell.o
-all: game
+all: GlobalSettings.h game 
 
 game: $(OBJ)
 	g++ $(OBJ) -o schelling.out -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
@@ -15,4 +15,7 @@ cell.o: include/Cell.cpp
 	g++ -std=c++14 -c $<
 
 clean:
+	rm *.o
+
+GlobalSettings.h:
 	rm *.o

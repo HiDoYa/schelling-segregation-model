@@ -2,14 +2,23 @@
 
 Cell::Cell(int _race, sf::Vector2u windowSize) : race(_race), happy(false) {
     // Get random start position
-    int xPos = rand() % (int)windowSize.x + 1;
-    int yPos = rand() % (int)windowSize.y + 1;
-
-    circle.setPosition(sf::Vector2f(xPos, yPos));
+    newRandomPosition(windowSize);
     circle.setRadius(3);
 
-    // TODO Change color based on race
-    sf::Color color = _race == 0 ? sf::Color::Blue : (_race == 1 ? sf::Color::Red : sf::Color::Green);
+    // Change color based on race
+    sf::Color color;
+    switch (_race) {
+        case 0: color = sf::Color::Red; break;
+        case 1: color = sf::Color::Blue; break;
+        case 2: color = sf::Color::Green; break;
+        case 3: color = sf::Color::Blue; break;
+        case 4: color = sf::Color::Black; break;
+        case 5: color = sf::Color::White; break;
+        case 6: color = sf::Color::Yellow; break;
+        case 7: color = sf::Color::Magenta; break;
+        default: color = sf::Color::Cyan; break;
+    }
+
     circle.setFillColor(color);
 }
 
@@ -22,11 +31,14 @@ bool operator!= (Cell&lhs, Cell &rhs) {
 }
 
 void Cell::resetClosest() {
-    for (auto cont : closest) {
+    for (auto& cont : closest) {
         cont.isClosest = false;
     }
 }
 
-void Cell::checkIfClosest(int race, float dist) {
+void Cell::newRandomPosition(sf::Vector2u windowSize) {
+    int xPos = rand() % (int)windowSize.x + 1;
+    int yPos = rand() % (int)windowSize.y + 1;
 
+    circle.setPosition(sf::Vector2f(xPos, yPos));
 }

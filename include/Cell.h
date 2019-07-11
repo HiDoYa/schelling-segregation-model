@@ -1,25 +1,10 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
+
+#include "GlobalSettings.h"
 
 #ifndef CELL
 #define CELL
-
-class Cell {
-    private:
-        sf::CircleShape circle;
-        int race;
-        bool happy;
-        Closest closest[10];
-
-    public:
-        Cell(int, sf::Vector2u);
-        void resetClosest();
-        void checkIfClosest(int, float);
-
-    friend class Population;
-    friend int main();
-    friend bool operator== (Cell &lhs, Cell &rhs);
-    friend bool operator!= (Cell &lhs, Cell &rhs);
-};
 
 // Container to hold cell and calculate distance to each cell
 // More memory used per cell but runs quicker computation
@@ -28,6 +13,24 @@ struct Closest {
     int race;
     int distance;
     bool isClosest; // To signal that computation for that cell has been done
+};
+
+class Cell {
+    private:
+        sf::CircleShape circle;
+        int race;
+        bool happy;
+        Closest closest[GlobalSettings::NumNeighbors];
+
+    public:
+        Cell(int, sf::Vector2u);
+        void resetClosest();
+        void newRandomPosition(sf::Vector2u);
+
+    friend class Population;
+    friend int main();
+    friend bool operator== (Cell &lhs, Cell &rhs);
+    friend bool operator!= (Cell &lhs, Cell &rhs);
 };
 
 #endif
