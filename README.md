@@ -1,7 +1,7 @@
 # Schelling Segregation Model
 Model of segregation in a population based on a preference for neighbors being the same "type" or "race" as you. This model goes to show how even a slight preference can cause larger macroscopic segregation in population distribution.
 
-This was written in C++ using the SFML library. Uses multithreading and number of threads can be customized in GlobalSettings.h.
+This was written in C++ using the SFML library. Uses multithreading and number of threads can be customized in GlobalSettings.h to optimize for your specific hardware.
 
 Can change number of races, number of cells per race, and other parameters in GlobalSettings.h, then recompile using make to run simulation. Press spacebar to go to next cycle and press R to restart with a new random placement.
 
