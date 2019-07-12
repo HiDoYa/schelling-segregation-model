@@ -8,7 +8,7 @@ Can change number of races, number of cells per race, and other parameters in Gl
 The following is a simulation with each cell's tolerance=0.5 and neighbors=10 meaning that if more than half of one's neighbors are of different type/race, the cell becomes unhappy and moves elsewhere.
 
 ### Cycle 1
-![alt text](images/0.png =300x300)
+![alt text](images/0.png)
 \
 Initially, each cell is in a random position and there is no apparent segregation.
 
