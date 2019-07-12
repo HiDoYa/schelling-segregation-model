@@ -3,7 +3,6 @@
 #include <ctime>
 #include <iostream>
 
-
 #include "include/GlobalSettings.h"
 #include "include/Population.h"
 

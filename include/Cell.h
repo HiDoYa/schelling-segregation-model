@@ -26,8 +26,6 @@ class Cell {
 
     friend class Population;
     friend int main();
-    friend bool operator== (Cell &lhs, Cell &rhs);
-    friend bool operator!= (Cell &lhs, Cell &rhs);
 };
 
 #endif

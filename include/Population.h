@@ -6,7 +6,6 @@
 #include <thread>
 #include <cmath>
 #include <algorithm>
-#include <unistd.h>
 
 #include "GlobalSettings.h"
 #include "Cell.h"

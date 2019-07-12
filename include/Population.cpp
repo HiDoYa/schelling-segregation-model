@@ -7,7 +7,6 @@ Population::Population(int numRaces, int numCellsPerRace, sf::Vector2u windowSiz
             cells.emplace_back(i, windowSize);
         }
     }
-
 }
 
 void Population::tick(sf::Vector2u windowSize) {
@@ -28,10 +27,9 @@ void Population::tick(sf::Vector2u windowSize) {
             }
             if (numForeign > GlobalSettings::NumNeighbors * GlobalSettings::Tolerance) {   
                 isHappy = false;
-                //std::cout << numForeign << ' ' << GlobalSettings::NumNeighbors * GlobalSettings::Tolerance << std::endl;
             }
 
-            // Move
+            // Move if unhappy
             if (!isHappy) {
                 cell.newRandomPosition(windowSize);
             }
@@ -73,8 +71,13 @@ std::array<CellContainer, GlobalSettings::NumNeighbors> Population::findClosestC
     // Sort cell containers and keep the lowest 10
     std::array<CellContainer, GlobalSettings::NumNeighbors> closest;
     std::sort(cellContainers.begin(), cellContainers.end());
+    int selfOffset = 0;
     for (int i = 0; i < closest.size(); i++) {
-        closest[i] = cellContainers[i];
+        if (cellContainers[i].distance == 0 && cellContainers[i].race == currentCell.race) {
+            // Don't want to store the distance to itself
+            selfOffset = 1;
+        }
+        closest[i] = cellContainers[i + selfOffset];
     }
 
     return closest;

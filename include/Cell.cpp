@@ -24,14 +24,6 @@ Cell::Cell(int _race, sf::Vector2u windowSize) : race(_race) {
     circle.setOutlineThickness(1);
 }
 
-bool operator== (Cell &lhs, Cell &rhs) {
-    return (lhs == rhs); // Only true if both are pointers to same thing (don't care about the value)
-}
-
-bool operator!= (Cell&lhs, Cell &rhs) {
-    return (lhs != rhs);
-}
-
 void Cell::newRandomPosition(sf::Vector2u windowSize) {
     int xPos = rand() % (int)windowSize.x + 1;
     int yPos = rand() % (int)windowSize.y + 1;
