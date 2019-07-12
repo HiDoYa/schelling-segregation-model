@@ -17,5 +17,6 @@ cell.o: include/Cell.cpp
 clean:
 	rm *.o
 
+# Even if not .o files exist, won't throw error
 GlobalSettings.h:
-	rm *.o
+	rm *.o || true

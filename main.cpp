@@ -25,7 +25,7 @@ int main() {
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::R) {
                         population = Population(GlobalSettings::NumRaces, GlobalSettings::NumCellsPerRace, windowSize);
-                    } else {
+                    } else if(event.key.code == sf::Keyboard::Space) {
                         population.tick(windowSize);
                     }
                     break;
