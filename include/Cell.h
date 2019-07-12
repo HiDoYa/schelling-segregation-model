@@ -19,11 +19,9 @@ class Cell {
     private:
         sf::CircleShape circle;
         int race;
-        Closest closest[GlobalSettings::NumNeighbors];
 
     public:
         Cell(int, sf::Vector2u);
-        void resetClosest();
         void newRandomPosition(sf::Vector2u);
 
     friend class Population;

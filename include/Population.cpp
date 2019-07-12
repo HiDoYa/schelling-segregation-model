@@ -10,13 +10,12 @@ Population::Population(int numRaces, int numCellsPerRace, sf::Vector2u windowSiz
 
 }
 
-
 void Population::tick(sf::Vector2u windowSize) {
     // Find NumNeighbors closest cells for each cell
     for (Cell& cell : cells) {
         bool isHappy = false;
         // Repeat until happy
-        //while (!isHappy) {
+        while (!isHappy) {
             isHappy = true;
 
             // If too many foreign, unhappy
@@ -29,14 +28,14 @@ void Population::tick(sf::Vector2u windowSize) {
             }
             if (numForeign > GlobalSettings::NumNeighbors * GlobalSettings::Tolerance) {   
                 isHappy = false;
+                //std::cout << numForeign << ' ' << GlobalSettings::NumNeighbors * GlobalSettings::Tolerance << std::endl;
             }
 
             // Move
             if (!isHappy) {
                 cell.newRandomPosition(windowSize);
             }
-        //}
-
+        }
     }
 }
 
@@ -44,49 +43,39 @@ std::vector<Cell> Population::getCells() {
     return cells;
 }
 
+// Collect all distances in cellContainers
 void Population::parallelClosest(int start, int end, Cell currentCell) {
     for (int i = start; i < end; i++) {
-        float curDist = calculateDistance(currentCell.circle.getPosition(), cells[i].circle.getPosition());
-        int race = cells[i].race;
-
-        // TODO: Create struct to store curDist and race together. After joinig threads, combine these structs together and sort
-        // Note: should operator overload for the struct to have comparisons (should only consider distance for comparisons)
+        cellContainers[i].distance = calculateDistance(currentCell.circle.getPosition(), cells[i].circle.getPosition());
+        cellContainers[i].race = cells[i].race;
     }
 }
 
 // Called by markhappy
 std::array<CellContainer, GlobalSettings::NumNeighbors> Population::findClosestCells(Cell currentCell) {
-    // Create NumNeighbors cells to store minimum distance
-    std::array<CellContainer, GlobalSettings::NumNeighbors> closest;
-
-    const int numThreads = 3;
-    std::thread t[numThreads];
-    int increment = std::floor(cells.size() / numThreads);
-    for (int i = 0; i < numThreads; i++) {
-        if (i = numThreads - 1) {
-            t[i] = std::thread(parallelClosest, increment * i, cells.size(), currentCell);
+    // Create threads to compute Euclidean distance
+    std::thread t[GlobalSettings::NumThreads];
+    int increment = std::floor(cells.size() / GlobalSettings::NumThreads);
+    for (int i = 0; i < GlobalSettings::NumThreads; i++) {
+        if (i == GlobalSettings::NumThreads - 1) {
+            // For the last thread, make sure to include the last cell (prevent off by one error)
+            t[i] = std::thread(&Population::parallelClosest, this, increment * i, cells.size(), currentCell);
         } else {
-            t[i] = std::thread(parallelClosest, increment * i, increment * (i + 1), currentCell);
+            t[i] = std::thread(&Population::parallelClosest, this, increment * i, increment * (i + 1), currentCell);
         }
     }
 
-    for (int i = 0; i < numThreads; i++) {
+    // Wait for all computations
+    for (int i = 0; i < GlobalSettings::NumThreads; i++) {
         t[i].join();
     }
 
-    /* Unparallelized closest
-    // To keep track of max element in array of NumNeighbors
-    Max max;
-    for (Cell& cell : cells) {
-        float curDist = calculateDistance(currentCell.circle.getPosition(), cell.circle.getPosition());
-        if (curDist < max.dist) {
-            // Replace the max distance cell with this new closer cell
-            closest[max.itr].race = cell.race;
-            closest[max.itr].distance = curDist;
-            max.findNewMax(closest);
-        }
+    // Sort cell containers and keep the lowest 10
+    std::array<CellContainer, GlobalSettings::NumNeighbors> closest;
+    std::sort(cellContainers.begin(), cellContainers.end());
+    for (int i = 0; i < closest.size(); i++) {
+        closest[i] = cellContainers[i];
     }
-    */
 
     return closest;
 }

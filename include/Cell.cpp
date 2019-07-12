@@ -20,6 +20,8 @@ Cell::Cell(int _race, sf::Vector2u windowSize) : race(_race) {
     }
 
     circle.setFillColor(color);
+    circle.setOutlineColor(sf::Color::White);
+    circle.setOutlineThickness(1);
 }
 
 bool operator== (Cell &lhs, Cell &rhs) {
@@ -28,12 +30,6 @@ bool operator== (Cell &lhs, Cell &rhs) {
 
 bool operator!= (Cell&lhs, Cell &rhs) {
     return (lhs != rhs);
-}
-
-void Cell::resetClosest() {
-    for (auto& cont : closest) {
-        cont.isClosest = false;
-    }
 }
 
 void Cell::newRandomPosition(sf::Vector2u windowSize) {

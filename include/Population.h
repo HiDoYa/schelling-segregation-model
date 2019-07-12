@@ -6,6 +6,7 @@
 #include <thread>
 #include <cmath>
 #include <algorithm>
+#include <unistd.h>
 
 #include "GlobalSettings.h"
 #include "Cell.h"
@@ -18,29 +19,21 @@
 struct CellContainer {
     CellContainer() : race(-1), distance(INT_MAX) {}
     int race;
-    int distance;
-};
-
-/*  For unparallelized version
-struct Max {
-    Max() : itr(0), dist(0) {}
-    void findNewMax(std::array<CellContainer, GlobalSettings::NumNeighbors> cellCont) {
-        dist = 0;
-        for (int i = 0; i < cellCont.size(); i++) {
-            if (cellCont[i].distance > dist) {
-                itr = i;
-                dist = cellCont[i].distance;
-            }
-        }
+    float distance;
+    friend bool operator< (const CellContainer& lhs, const CellContainer& rhs) {
+        return lhs.distance < rhs.distance;
     }
-    int itr;
-    float dist;
+    CellContainer& operator= (const CellContainer& cellCont) {
+        race = cellCont.race;
+        distance = cellCont.distance;
+        return *this;
+    }
 };
-*/
 
 class Population {
     private:
         std::vector<Cell> cells;
+        std::array<CellContainer, GlobalSettings::NumCellsPerRace * GlobalSettings::NumRaces> cellContainers;
 
     public:
         Population(int, int, sf::Vector2u);
